@@ -35,12 +35,19 @@ pub struct OPSuccinctDataFetcher {
     pub l2_provider: Arc<RootProvider<Http<Client>>>,
     pub rollup_config: RollupConfig,
     pub l1_block_time_secs: u64,
+    pub celestia_config: Option<CelestiaConfig>,
 }
 
 impl Default for OPSuccinctDataFetcher {
     fn default() -> Self {
         block_on(OPSuccinctDataFetcher::new())
     }
+}
+
+#[derive(Debug, Clone)]
+pub struct CelestiaConfig {
+    pub celestia_connection: String,
+    pub namespace: String,
 }
 
 #[derive(Debug, Clone)]
@@ -104,6 +111,7 @@ impl OPSuccinctDataFetcher {
             rollup_config: RollupConfig::default(),
             // Default L1 block time for most Ethereum chains.
             l1_block_time_secs: 12,
+            celestia_config: None,
         };
 
         // Get the L1 block time.
@@ -504,6 +512,8 @@ impl OPSuccinctDataFetcher {
                 .unwrap_or("0".to_string())
                 .parse()
                 .unwrap(),
+            namespace: self.celestia_config.clone().unwrap().namespace,
+            celestia_connection: self.celestia_config.clone().unwrap().celestia_connection,
         })
     }
 

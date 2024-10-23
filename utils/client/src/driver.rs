@@ -7,6 +7,7 @@ use crate::l2_chain_provider::MultiblockOracleL2ChainProvider;
 use alloc::sync::Arc;
 use alloy_consensus::{Header, Sealed};
 use anyhow::{anyhow, Result};
+use celestia_types::nmt::Namespace;
 use core::fmt::Debug;
 use kona_client::{
     l1::{OracleBlobProvider, OracleL1ChainProvider},
@@ -22,7 +23,7 @@ use kona_derive::{
         AttributesQueue, BatchQueue, BatchStream, ChannelBank, ChannelReader, FrameQueue,
         L1Retrieval, L1Traversal,
     },
-    traits::{OriginProvider, Signal},
+    traits::{CelestiaProvider, OriginProvider, Signal},
 };
 use kona_mpt::TrieProvider;
 use kona_preimage::{CommsClient, PreimageKey, PreimageKeyType};
@@ -32,14 +33,14 @@ use op_alloy_rpc_types_engine::OpAttributesWithParent;
 use log::{info, warn};
 
 /// An oracle-backed derivation pipeline.
-pub type OraclePipeline<O> = DerivationPipeline<
-    MultiblockOracleAttributesQueue<OracleDataProvider<O>, O>,
+pub type OraclePipeline<O, CE> = DerivationPipeline<
+    MultiblockOracleAttributesQueue<OracleDataProvider<O, CE>, O>,
     MultiblockOracleL2ChainProvider<O>,
 >;
 
 /// An oracle-backed Ethereum data source.
-pub type OracleDataProvider<O> =
-    EthereumDataSource<OracleL1ChainProvider<O>, OracleBlobProvider<O>>;
+pub type OracleDataProvider<O, CE> =
+    EthereumDataSource<OracleL1ChainProvider<O>, OracleBlobProvider<O>, CE>;
 
 /// An oracle-backed payload attributes builder for the `AttributesQueue` stage of the derivation
 /// pipeline.
@@ -68,18 +69,23 @@ pub type MultiblockOracleAttributesQueue<DAP, O> = AttributesQueue<
 ///
 /// [L2PayloadAttributes]: kona_derive::types::L2PayloadAttributes
 #[derive(Debug)]
-pub struct MultiBlockDerivationDriver<O: CommsClient + Send + Sync + Debug> {
+pub struct MultiBlockDerivationDriver<
+    O: CommsClient + Send + Sync + Debug,
+    CE: CelestiaProvider + Send + Sync + Debug + Clone,
+> {
     /// The current L2 safe head.
     pub l2_safe_head: L2BlockInfo,
     /// The header of the L2 safe head.
     pub l2_safe_head_header: Sealed<Header>,
     /// The inner pipeline.
-    pub pipeline: OraclePipeline<O>,
+    pub pipeline: OraclePipeline<O, CE>,
     /// The block number of the final L2 block being claimed.
     pub l2_claim_block: u64,
 }
 
-impl<O: CommsClient + Send + Sync + Debug> MultiBlockDerivationDriver<O> {
+impl<O: CommsClient + Send + Sync + Debug, CE: CelestiaProvider + Send + Sync + Debug + Clone>
+    MultiBlockDerivationDriver<O, CE>
+{
     /// Consumes self and returns the owned [Header] of the current L2 safe head.
     pub fn clone_l2_safe_head_header(&self) -> Sealed<Header> {
         self.l2_safe_head_header.clone()
@@ -100,6 +106,8 @@ impl<O: CommsClient + Send + Sync + Debug> MultiBlockDerivationDriver<O> {
         boot_info: &BootInfo,
         caching_oracle: &O,
         blob_provider: OracleBlobProvider<O>,
+        celestia_provider: CE,
+        namespace: Namespace,
         mut chain_provider: OracleL1ChainProvider<O>,
         mut l2_chain_provider: MultiblockOracleL2ChainProvider<O>,
     ) -> Result<Self> {
@@ -120,7 +128,13 @@ impl<O: CommsClient + Send + Sync + Debug> MultiBlockDerivationDriver<O> {
             l2_chain_provider.clone(),
             chain_provider.clone(),
         );
-        let dap = EthereumDataSource::new(chain_provider.clone(), blob_provider, &cfg);
+        let dap = EthereumDataSource::new(
+            chain_provider.clone(),
+            blob_provider,
+            &cfg,
+            celestia_provider,
+            namespace,
+        );
         let pipeline = PipelineBuilder::new()
             .rollup_config(cfg)
             .dap_source(dap)

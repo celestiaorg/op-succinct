@@ -14,8 +14,10 @@ use alloc::sync::Arc;
 
 use alloy_consensus::{BlockBody, Sealed};
 use alloy_eips::eip2718::Decodable2718;
+use celestia_types::nmt::Namespace;
 use cfg_if::cfg_if;
 use kona_client::{
+    celestia::celestia_provider::{self, OracleCelestiaProvider},
     l1::{OracleBlobProvider, OracleL1ChainProvider},
     BootInfo,
 };
@@ -94,16 +96,22 @@ fn main() {
         let l1_provider = OracleL1ChainProvider::new(boot.clone(), oracle.clone());
         let mut l2_provider = MultiblockOracleL2ChainProvider::new(boot.clone(), oracle.clone());
         let beacon = OracleBlobProvider::new(oracle.clone());
+        let celestia_provider = OracleCelestiaProvider::new(oracle.clone());
 
         ////////////////////////////////////////////////////////////////
         //                   DERIVATION & EXECUTION                   //
         ////////////////////////////////////////////////////////////////
+
+        // TODO (Diego) add a nice way to read namespace from an env file or something
+        let namespace = Namespace::new_v0(&[0]).unwrap();
 
         println!("cycle-tracker-start: derivation-instantiation");
         let mut driver = MultiBlockDerivationDriver::new(
             boot.as_ref(),
             oracle.as_ref(),
             beacon,
+            celestia_provider,
+            namespace,
             l1_provider,
             l2_provider.clone(),
         )

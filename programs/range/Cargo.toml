@@ -29,3 +29,4 @@ kona-derive.workspace = true
 
 # op-succinct
 op-succinct-client-utils.workspace = true
+celestia-types = "0.6.1"
