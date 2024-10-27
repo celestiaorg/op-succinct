@@ -35,7 +35,7 @@ pub struct OPSuccinctDataFetcher {
     pub l2_provider: Arc<RootProvider<Http<Client>>>,
     pub rollup_config: RollupConfig,
     pub l1_block_time_secs: u64,
-    pub celestia_config: Option<CelestiaConfig>,
+    pub celestia_config: CelestiaConfig,
 }
 
 impl Default for OPSuccinctDataFetcher {
@@ -48,6 +48,16 @@ impl Default for OPSuccinctDataFetcher {
 pub struct CelestiaConfig {
     pub celestia_connection: String,
     pub namespace: String,
+    pub auth_token: String,
+}
+
+fn get_celestia_config() -> CelestiaConfig {
+    CelestiaConfig {
+        celestia_connection: env::var("CELESTIA_NODE_RPC")
+            .unwrap_or_else(|_| "http://localhost:26658".to_string()),
+        namespace: env::var("NAMESPACE").unwrap_or_else(|_| "0672fc95f1382859".to_string()),
+        auth_token: env::var("AUTH_TOKEN").unwrap_or_else(|_| "".to_string()),
+    }
 }
 
 #[derive(Debug, Clone)]
@@ -59,7 +69,7 @@ pub struct RPCConfig {
 }
 
 /// The mode corresponding to the chain we are fetching data for.
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug)]
 pub enum RPCMode {
     L1,
     L1Beacon,
@@ -104,6 +114,14 @@ impl OPSuccinctDataFetcher {
             ProviderBuilder::default().on_http(Url::from_str(&rpc_config.l2_rpc).unwrap()),
         );
 
+        let celestia_config = get_celestia_config();
+
+        println!(
+            "Got Celestia Config: {:?}",
+            celestia_config.celestia_connection
+        );
+        println!("Got Celestia Auth Token: {:?}", celestia_config.auth_token);
+        println!("Got Celestia Namespace: {:?}", celestia_config.namespace);
         let mut fetcher = OPSuccinctDataFetcher {
             rpc_config,
             l1_provider,
@@ -111,7 +129,7 @@ impl OPSuccinctDataFetcher {
             rollup_config: RollupConfig::default(),
             // Default L1 block time for most Ethereum chains.
             l1_block_time_secs: 12,
-            celestia_config: None,
+            celestia_config: celestia_config.clone(),
         };
 
         // Get the L1 block time.
@@ -346,6 +364,7 @@ impl OPSuccinctDataFetcher {
         rpc_mode: RPCMode,
         target_timestamp: u64,
     ) -> Result<B256> {
+        println!("rpc mode: {:?}", rpc_mode);
         let provider = self.get_provider(rpc_mode);
         let latest_block = provider
             .get_block_by_number(BlockNumberOrTag::Latest, false)
@@ -490,6 +509,9 @@ impl OPSuccinctDataFetcher {
         // Create the path to the rollup config file.
         let rollup_config_path = get_rollup_config_path(self.rollup_config.l2_chain_id)?;
 
+        // get the celestia config
+        let celestia_config = get_celestia_config();
+
         // Creates the data directory if it doesn't exist, or no-ops if it does. Used to store the
         // witness data.
         fs::create_dir_all(&data_directory)?;
@@ -512,8 +534,9 @@ impl OPSuccinctDataFetcher {
                 .unwrap_or("0".to_string())
                 .parse()
                 .unwrap(),
-            namespace: self.celestia_config.clone().unwrap().namespace,
-            celestia_connection: self.celestia_config.clone().unwrap().celestia_connection,
+            namespace: celestia_config.clone().namespace,
+            celestia_connection: celestia_config.clone().celestia_connection,
+            auth_token: celestia_config.clone().auth_token,
         })
     }
 
