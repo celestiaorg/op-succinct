@@ -116,12 +116,6 @@ impl OPSuccinctDataFetcher {
 
         let celestia_config = get_celestia_config();
 
-        println!(
-            "Got Celestia Config: {:?}",
-            celestia_config.celestia_connection
-        );
-        println!("Got Celestia Auth Token: {:?}", celestia_config.auth_token);
-        println!("Got Celestia Namespace: {:?}", celestia_config.namespace);
         let mut fetcher = OPSuccinctDataFetcher {
             rpc_config,
             l1_provider,
