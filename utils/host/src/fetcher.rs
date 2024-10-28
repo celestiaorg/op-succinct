@@ -358,7 +358,6 @@ impl OPSuccinctDataFetcher {
         rpc_mode: RPCMode,
         target_timestamp: u64,
     ) -> Result<B256> {
-        println!("rpc mode: {:?}", rpc_mode);
         let provider = self.get_provider(rpc_mode);
         let latest_block = provider
             .get_block_by_number(BlockNumberOrTag::Latest, false)
