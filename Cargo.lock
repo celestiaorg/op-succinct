@@ -3901,7 +3901,7 @@ dependencies = [
 [[package]]
 name = "kona-client"
 version = "0.1.0"
-source = "git+https://github.com/Ferret-san/kona?branch=celestia-patch-10-17-kona#435c0fd47c932a8d915d188ed861cf258b1ceabb"
+source = "git+https://github.com/Ferret-san/kona?branch=celestia-patch-10-17-kona#34c3e8847cff9dfee7de31ee4ba779649471dc06"
 dependencies = [
  "alloy-consensus",
  "alloy-eips",
@@ -3937,7 +3937,7 @@ dependencies = [
 [[package]]
 name = "kona-common"
 version = "0.0.3"
-source = "git+https://github.com/Ferret-san/kona?branch=celestia-patch-10-17-kona#435c0fd47c932a8d915d188ed861cf258b1ceabb"
+source = "git+https://github.com/Ferret-san/kona?branch=celestia-patch-10-17-kona#34c3e8847cff9dfee7de31ee4ba779649471dc06"
 dependencies = [
  "cfg-if",
  "linked_list_allocator",
@@ -3947,7 +3947,7 @@ dependencies = [
 [[package]]
 name = "kona-common-proc"
 version = "0.0.3"
-source = "git+https://github.com/Ferret-san/kona?branch=celestia-patch-10-17-kona#435c0fd47c932a8d915d188ed861cf258b1ceabb"
+source = "git+https://github.com/Ferret-san/kona?branch=celestia-patch-10-17-kona#34c3e8847cff9dfee7de31ee4ba779649471dc06"
 dependencies = [
  "anyhow",
  "cfg-if",
@@ -3960,7 +3960,7 @@ dependencies = [
 [[package]]
 name = "kona-derive"
 version = "0.0.3"
-source = "git+https://github.com/Ferret-san/kona?branch=celestia-patch-10-17-kona#435c0fd47c932a8d915d188ed861cf258b1ceabb"
+source = "git+https://github.com/Ferret-san/kona?branch=celestia-patch-10-17-kona#34c3e8847cff9dfee7de31ee4ba779649471dc06"
 dependencies = [
  "alloc-no-stdlib",
  "alloy-consensus",
@@ -3988,7 +3988,7 @@ dependencies = [
 [[package]]
 name = "kona-executor"
 version = "0.0.2"
-source = "git+https://github.com/Ferret-san/kona?branch=celestia-patch-10-17-kona#435c0fd47c932a8d915d188ed861cf258b1ceabb"
+source = "git+https://github.com/Ferret-san/kona?branch=celestia-patch-10-17-kona#34c3e8847cff9dfee7de31ee4ba779649471dc06"
 dependencies = [
  "alloy-consensus",
  "alloy-eips",
@@ -4005,7 +4005,7 @@ dependencies = [
 [[package]]
 name = "kona-host"
 version = "0.1.0"
-source = "git+https://github.com/Ferret-san/kona?branch=celestia-patch-10-17-kona#435c0fd47c932a8d915d188ed861cf258b1ceabb"
+source = "git+https://github.com/Ferret-san/kona?branch=celestia-patch-10-17-kona#34c3e8847cff9dfee7de31ee4ba779649471dc06"
 dependencies = [
  "alloy-consensus",
  "alloy-eips",
@@ -4044,7 +4044,7 @@ dependencies = [
 [[package]]
 name = "kona-mpt"
 version = "0.0.3"
-source = "git+https://github.com/Ferret-san/kona?branch=celestia-patch-10-17-kona#435c0fd47c932a8d915d188ed861cf258b1ceabb"
+source = "git+https://github.com/Ferret-san/kona?branch=celestia-patch-10-17-kona#34c3e8847cff9dfee7de31ee4ba779649471dc06"
 dependencies = [
  "alloy-consensus",
  "alloy-primitives 0.8.9",
@@ -4059,7 +4059,7 @@ dependencies = [
 [[package]]
 name = "kona-preimage"
 version = "0.0.3"
-source = "git+https://github.com/Ferret-san/kona?branch=celestia-patch-10-17-kona#435c0fd47c932a8d915d188ed861cf258b1ceabb"
+source = "git+https://github.com/Ferret-san/kona?branch=celestia-patch-10-17-kona#34c3e8847cff9dfee7de31ee4ba779649471dc06"
 dependencies = [
  "alloy-primitives 0.8.9",
  "async-trait",
@@ -4072,7 +4072,7 @@ dependencies = [
 [[package]]
 name = "kona-primitives"
 version = "0.0.2"
-source = "git+https://github.com/Ferret-san/kona?branch=celestia-patch-10-17-kona#435c0fd47c932a8d915d188ed861cf258b1ceabb"
+source = "git+https://github.com/Ferret-san/kona?branch=celestia-patch-10-17-kona#34c3e8847cff9dfee7de31ee4ba779649471dc06"
 dependencies = [
  "alloy-eips",
  "alloy-primitives 0.8.9",
@@ -4088,7 +4088,7 @@ dependencies = [
 [[package]]
 name = "kona-providers"
 version = "0.0.1"
-source = "git+https://github.com/Ferret-san/kona?branch=celestia-patch-10-17-kona#435c0fd47c932a8d915d188ed861cf258b1ceabb"
+source = "git+https://github.com/Ferret-san/kona?branch=celestia-patch-10-17-kona#34c3e8847cff9dfee7de31ee4ba779649471dc06"
 dependencies = [
  "alloy-consensus",
  "alloy-primitives 0.8.9",
@@ -4101,7 +4101,7 @@ dependencies = [
 [[package]]
 name = "kona-providers-alloy"
 version = "0.0.1"
-source = "git+https://github.com/Ferret-san/kona?branch=celestia-patch-10-17-kona#435c0fd47c932a8d915d188ed861cf258b1ceabb"
+source = "git+https://github.com/Ferret-san/kona?branch=celestia-patch-10-17-kona#34c3e8847cff9dfee7de31ee4ba779649471dc06"
 dependencies = [
  "alloy-consensus",
  "alloy-eips",
