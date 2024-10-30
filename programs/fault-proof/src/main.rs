@@ -12,8 +12,10 @@ extern crate alloc;
 
 use alloc::sync::Arc;
 
+use celestia_types::nmt::Namespace;
 use cfg_if::cfg_if;
 use kona_client::{
+    celestia::celestia_provider::{self, OracleCelestiaProvider},
     l1::{DerivationDriver, OracleBlobProvider, OracleL1ChainProvider},
     l2::OracleL2ChainProvider,
     BootInfo,
@@ -83,16 +85,21 @@ fn main() {
         let l1_provider = OracleL1ChainProvider::new(boot.clone(), oracle.clone());
         let l2_provider = OracleL2ChainProvider::new(boot.clone(), oracle.clone());
         let beacon = OracleBlobProvider::new(oracle.clone());
+        let celestia_provider = OracleCelestiaProvider::new(oracle.clone());
 
         ////////////////////////////////////////////////////////////////
         //                   DERIVATION & EXECUTION                   //
         ////////////////////////////////////////////////////////////////
+
+        let namespace = Namespace::new_v0(&[0]).unwrap();
 
         println!("cycle-tracker-start: derivation-instantiation");
         let mut driver = DerivationDriver::new(
             boot.as_ref(),
             oracle.as_ref(),
             beacon,
+            celestia_provider,
+            namespace,
             l1_provider,
             l2_provider.clone(),
         )

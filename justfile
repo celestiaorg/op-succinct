@@ -37,11 +37,13 @@ cost-estimator start end:
 
 # Runs the client program in native execution mode. Modified version of Kona Native Client execution:
 # https://github.com/ethereum-optimism/kona/blob/ae71b9df103c941c06b0dc5400223c4f13fe5717/bin/client/justfile#L65-L108
-run-client-native l2_block_num l1_rpc='${L1_RPC}' l1_beacon_rpc='${L1_BEACON_RPC}' l2_rpc='${L2_RPC}' verbosity="-vvvv":
+run-client-native l2_block_num l1_rpc='${L1_RPC}' l1_beacon_rpc='${L1_BEACON_RPC}' l2_rpc='${L2_RPC}' celestia_conn='${CELESTIA_NODE_RPC}' namespace='${NAMESPAE}' verbosity="-vvvv":
   #!/usr/bin/env bash
   L1_NODE_ADDRESS="{{l1_rpc}}"
   L1_BEACON_ADDRESS="{{l1_beacon_rpc}}"
   L2_NODE_ADDRESS="{{l2_rpc}}"
+  CELESTIA_CONNECTION="{{celestia_conn}}"
+  NAMESPACE="{{namespace}}"
   echo "L1 Node Address: $L1_NODE_ADDRESS"
   echo "L1 Beacon Address: $L1_BEACON_ADDRESS"
   echo "L2 Node Address: $L2_NODE_ADDRESS"
@@ -82,6 +84,8 @@ run-client-native l2_block_num l1_rpc='${L1_RPC}' l1_beacon_rpc='${L1_BEACON_RPC
     --l1-node-address $L1_NODE_ADDRESS \
     --l1-beacon-address $L1_BEACON_ADDRESS \
     --l2-node-address $L2_NODE_ADDRESS \
+    --celestia-connection $CELESTIA_CONNECTION \
+    --namespace $NAMESPACE \
     --exec $CLIENT_BIN_PATH \
     --data-dir $DATA_DIRECTORY \
     {{verbosity}}

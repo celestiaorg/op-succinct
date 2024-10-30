@@ -41,3 +41,4 @@ itertools.workspace = true
 
 # kzg
 kzg-rs.workspace = true
+celestia-types = "0.6.1"

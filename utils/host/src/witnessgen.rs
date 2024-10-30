@@ -17,6 +17,9 @@ pub fn convert_host_cli_to_args(host_cli: &HostCli) -> Vec<String> {
             "--claimed-l2-block-number={}",
             host_cli.claimed_l2_block_number
         ),
+        format!("--celestia-connection={}", host_cli.celestia_connection),
+        format!("--auth-token={}", host_cli.auth_token),
+        format!("--namespace={}", host_cli.namespace),
     ];
     // The verbosity should be passed as -v, -vv, -vvv, etc.
     if host_cli.v > 0 {
