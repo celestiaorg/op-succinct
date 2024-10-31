@@ -1,46 +1,69 @@
 services:
-  # BoB
-  op-succinct-server-bob:
+  # BoB Testnet
+  op-succinct-server-bob-testnet:
     build:
       context: .
       dockerfile: ./proposer/succinct/Dockerfile
     env_file:
-      - .env.bob
+      - .env.bobtestnet
     restart: unless-stopped
     ports:
       - "3001:3001"
 
-  op-succinct-proposer-bob:
+  op-succinct-proposer-bob-testnet:
     build:
       context: .
       dockerfile: ./proposer/op/Dockerfile.op_proposer
     env_file:
-      - .env.bob
+      - .env.bobtestnet
     restart: unless-stopped
     depends_on:
-      - op-succinct-server-bob
+      - op-succinct-server-bob-testnet
     volumes:
       - ./db:/usr/local/bin/dbdata
   
-  # Phala
-  op-succinct-server-phala:
+  # Phala Testnet
+  op-succinct-server-phala-testnet:
     build:
       context: .
       dockerfile: ./proposer/succinct/Dockerfile
     env_file:
-      - .env.phala
+      - .env.phalatestnet
     restart: unless-stopped
     ports:
       - "3002:3002"
 
-  op-succinct-proposer-phala:
+  op-succinct-proposer-phala-testnet:
     build:
       context: .
       dockerfile: ./proposer/op/Dockerfile.op_proposer
     env_file:
-      - .env.phala
+      - .env.phalatestnet
     restart: unless-stopped
     depends_on:
-      - op-succinct-server-phala
+      - op-succinct-server-phala-testnet
+    volumes:
+      - ./db:/usr/local/bin/dbdata
+
+  # OP Sepolia
+  op-succinct-server-op-sepolia:
+    build:
+      context: .
+      dockerfile: ./proposer/succinct/Dockerfile
+    env_file:
+      - .env.opsepolia
+    restart: unless-stopped
+    ports:
+      - "3003:3003"
+
+  op-succinct-proposer-op-sepolia:
+    build:
+      context: .
+      dockerfile: ./proposer/op/Dockerfile.op_proposer
+    env_file:
+      - .env.opsepolia
+    restart: unless-stopped
+    depends_on:
+      - op-succinct-server-op-sepolia
     volumes:
       - ./db:/usr/local/bin/dbdata
