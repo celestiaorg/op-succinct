@@ -2356,7 +2356,7 @@ checksum = "0d6ef0072f8a535281e4876be788938b528e9a1d43900b82c2569af7da799125"
 [[package]]
 name = "ecdsa"
 version = "0.16.8"
-source = "git+https://github.com/sp1-patches/signatures?branch=ratan/secp256k1-add-fixes-v0.16.8#cdeab4f0ed0d715ceae3fc6d09d16ec3ae41ead7"
+source = "git+https://github.com/sp1-patches/signatures?branch=patch-ecdsa-v0.16.8#aad9626d51e830729969220eee44de082ff97d53"
 dependencies = [
  "anyhow",
  "cfg-if",
@@ -2366,7 +2366,7 @@ dependencies = [
  "hex-literal",
  "rfc6979",
  "signature",
- "sp1-lib 3.0.0-rc3",
+ "sp1-lib 3.0.0",
  "spki",
 ]
 
@@ -4793,6 +4793,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "op-alloy-network"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d113b325527ba7da271a8793f1c14bdf7f035ce9e0611e668c36fc6812568c7f"
+dependencies = [
+ "alloy-consensus",
+ "alloy-network",
+ "alloy-primitives 0.8.10",
+ "alloy-rpc-types-eth",
+ "op-alloy-consensus",
+ "op-alloy-rpc-types",
+]
+
+[[package]]
 name = "op-alloy-protocol"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4841,6 +4855,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "op-succinct-build-utils"
+version = "0.1.0"
+dependencies = [
+ "cargo_metadata",
+ "sp1-build",
+]
+
+[[package]]
 name = "op-succinct-client-utils"
 version = "0.1.0"
 dependencies = [
@@ -4873,12 +4895,25 @@ dependencies = [
 ]
 
 [[package]]
+name = "op-succinct-fees"
+version = "0.1.0"
+dependencies = [
+ "alloy-primitives 0.8.10",
+ "anyhow",
+ "clap",
+ "dotenv",
+ "op-succinct-host-utils",
+ "tokio",
+]
+
+[[package]]
 name = "op-succinct-host-utils"
 version = "0.1.0"
 dependencies = [
  "alloy",
  "alloy-consensus",
  "alloy-primitives 0.8.10",
+ "alloy-rlp",
  "alloy-sol-types 0.8.10",
  "anyhow",
  "cargo_metadata",
@@ -4888,7 +4923,10 @@ dependencies = [
  "kona-primitives",
  "log",
  "num-format",
+ "op-alloy-consensus",
  "op-alloy-genesis",
+ "op-alloy-network",
+ "op-alloy-protocol",
  "op-alloy-rpc-types",
  "op-succinct-client-utils",
  "reqwest 0.12.9",
@@ -4910,13 +4948,12 @@ dependencies = [
  "axum",
  "base64 0.22.1",
  "bincode",
- "cargo_metadata",
  "dotenv",
  "log",
+ "op-succinct-build-utils",
  "op-succinct-client-utils",
  "op-succinct-host-utils",
  "serde",
- "sp1-build",
  "sp1-sdk",
  "tokio",
  "tower-http",
@@ -4933,9 +4970,9 @@ dependencies = [
  "dotenv",
  "num-format",
  "op-alloy-genesis",
+ "op-succinct-build-utils",
  "op-succinct-client-utils",
  "op-succinct-host-utils",
- "sp1-build",
  "sp1-sdk",
  "tokio",
 ]
@@ -4954,13 +4991,13 @@ dependencies = [
  "futures",
  "kona-host",
  "log",
+ "op-succinct-build-utils",
  "op-succinct-client-utils",
  "op-succinct-host-utils",
  "rayon",
  "reqwest 0.12.9",
  "serde",
  "serde_json",
- "sp1-build",
  "sp1-sdk",
  "tokio",
 ]
@@ -6302,7 +6339,7 @@ dependencies = [
 [[package]]
 name = "rfc6979"
 version = "0.4.0"
-source = "git+https://github.com/sp1-patches/signatures?branch=ratan/secp256k1-add-fixes-v0.16.8#cdeab4f0ed0d715ceae3fc6d09d16ec3ae41ead7"
+source = "git+https://github.com/sp1-patches/signatures?branch=patch-ecdsa-v0.16.8#aad9626d51e830729969220eee44de082ff97d53"
 dependencies = [
  "hmac",
  "subtle",
@@ -7266,15 +7303,6 @@ dependencies = [
  "hex",
  "serde",
  "snowbridge-amcl",
-]
-
-[[package]]
-name = "sp1-lib"
-version = "3.0.0-rc3"
-source = "git+https://github.com/succinctlabs/sp1.git?branch=tamir/v1.3.0-rc2#d900b661e552c4cb87cd6dee56bee73d809fb426"
-dependencies = [
- "bincode",
- "serde",
 ]
 
 [[package]]
