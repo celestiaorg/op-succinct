@@ -72,7 +72,7 @@ impl InMemoryOracle {
 impl PreimageOracleClient for InMemoryOracle {
     async fn get(&self, key: PreimageKey) -> Result<Vec<u8>, PreimageOracleError> {
         let key_bytes: [u8; 32] = key.into();
-        println!("Key Type Request: {:?}", key.key_type());
+        // println!("Key Type Request: {:?}", key.key_type());
         self.cache
             .get(&key_bytes)
             .cloned()
